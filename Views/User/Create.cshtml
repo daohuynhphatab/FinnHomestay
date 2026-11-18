@@ -1,0 +1,70 @@
+@model FinnHomestay.Models.UserCreateViewModel
+
+@{
+    ViewData["Title"] = "Thêm tài khoản mới";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">➕ Thêm Tài Khoản Mới</h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Create" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3" role="alert"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="FullName" class="form-label fw-semibold"></label>
+                        <input asp-for="FullName" class="form-control" placeholder="Ví dụ: Trần Văn Nam" autofocus />
+                        <span asp-validation-for="FullName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-semibold"></label>
+                        <input asp-for="Email" class="form-control" placeholder="name@example.com" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Phone" class="form-label fw-semibold"></label>
+                        <input asp-for="Phone" class="form-control" placeholder="Ví dụ: 0912345678" />
+                        <span asp-validation-for="Phone" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label fw-semibold"></label>
+                        <input asp-for="Password" class="form-control" placeholder="Tối thiểu 6 ký tự" />
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                        <div class="form-text">Mật khẩu sẽ được mã hóa an toàn bằng SHA-256 trước khi lưu.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Role" class="form-label fw-semibold"></label>
+                        <select asp-for="Role" class="form-select">
+                            <option value="Customer">👤 Khách hàng (Customer)</option>
+                            <option value="Staff">💼 Nhân viên (Staff)</option>
+                            <option value="Admin">👑 Quản trị viên (Admin)</option>
+                        </select>
+                        <span asp-validation-for="Role" class="text-danger small"></span>
+                        <div class="form-text">Cấp quyền hạn sử dụng tương ứng cho tài khoản.</div>
+                    </div>
+
+                    <div class="d-flex justify-content-between pt-3 border-top">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            ← Quay lại danh sách
+                        </a>
+                        <button type="submit" class="btn btn-primary px-4">
+                            Lưu tài khoản
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

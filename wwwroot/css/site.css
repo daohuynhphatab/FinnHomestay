@@ -1,0 +1,908 @@
+/* ==========================================================================
+   Finn Homestay - Modern & Cozy Homestay Theme
+   Bảng màu: Nền trắng sữa (#fdfbf7), Xanh lá đậm (#2c5f2d), Nâu gỗ (#977b5a),
+             Text xám than (#333333), Điểm nhấn vàng đồng (#c5a059)
+   Typography: 'Playfair Display' (Heading) & 'Mulish' (Body)
+   ========================================================================== */
+
+/* --- 1. CSS VARIABLES --- */
+:root {
+    --color-bg: #fdfbf7;
+    --color-surface: #ffffff;
+    --color-surface-soft: #f8f5ee;
+    --color-text: #333333;
+    --color-text-muted: #6c7278;
+    --color-text-light: #9aa0a6;
+
+    --color-primary: #2c5f2d;          /* Xanh lá đậm thiên nhiên */
+    --color-primary-hover: #214822;
+    --color-primary-subtle: #e9f2ea;
+
+    --color-wood: #977b5a;             /* Nâu gỗ ấm áp */
+    --color-wood-hover: #7d6549;
+    --color-wood-subtle: #f5eee6;
+
+    --color-gold: #c5a059;             /* Vàng đồng sang trọng */
+    --color-gold-hover: #b08d46;
+    --color-gold-subtle: #fbf6ec;
+
+    --color-border: rgba(151, 123, 90, 0.16);
+    --color-border-subtle: rgba(0, 0, 0, 0.06);
+
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-body: 'Mulish', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-card: 16px;
+    --radius-lg: 24px;
+    --radius-hero: 40px;
+    --radius-pill: 50px;
+
+    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.05);
+    --shadow-card-hover: 0 20px 40px rgba(0, 0, 0, 0.08);
+    --shadow-soft: 0 6px 20px rgba(0, 0, 0, 0.04);
+    --shadow-floating: 0 12px 35px rgba(44, 95, 45, 0.15);
+}
+
+/* --- 2. BASE & TYPOGRAPHY --- */
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.65;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+h1, h2, h3, h4, h5, h6,
+.font-heading {
+    font-family: var(--font-heading);
+    color: #23211e;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.25s ease;
+}
+
+a:hover {
+    color: var(--color-primary-hover);
+}
+
+/* --- 3. NAVBAR STYLING (MODERN & COZY) --- */
+.navbar-cozy {
+    background-color: rgba(253, 251, 247, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+    transition: all 0.3s ease;
+    padding: 0.85rem 0;
+    z-index: 1030;
+}
+
+.navbar-cozy .navbar-brand {
+    font-family: var(--font-heading);
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.2s ease;
+}
+
+.navbar-cozy .navbar-brand:hover {
+    color: var(--color-wood);
+    transform: translateY(-1px);
+}
+
+.navbar-cozy .navbar-brand .brand-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    background-color: var(--color-primary-subtle);
+    color: var(--color-primary);
+    border-radius: 10px;
+    font-size: 1.1rem;
+}
+
+.navbar-cozy .nav-link {
+    color: var(--color-text);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.55rem 1rem !important;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+}
+
+.navbar-cozy .nav-link:hover,
+.navbar-cozy .nav-link.active {
+    color: var(--color-primary);
+    background-color: var(--color-primary-subtle);
+}
+
+.navbar-cozy .user-menu-btn {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    padding: 0.4rem 1.1rem;
+    color: var(--color-text);
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: all 0.25s ease;
+}
+
+.navbar-cozy .user-menu-btn:hover {
+    border-color: var(--color-wood);
+    box-shadow: var(--shadow-soft);
+}
+
+/* --- 4. HERO BANNER SECTION (CURVED BOTTOM & TEXT SHADOW) --- */
+.hero-cozy {
+    position: relative;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #ffffff;
+    /* Bo cong cạnh dưới theo đúng yêu cầu thiết kế */
+    border-bottom-left-radius: var(--radius-hero);
+    border-bottom-right-radius: var(--radius-hero);
+    overflow: hidden;
+    background-image:
+        linear-gradient(180deg, rgba(20, 26, 20, 0.42) 0%, rgba(20, 24, 18, 0.72) 100%),
+        url('/photos/banners/hero-banner.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+}
+
+.hero-cozy-content {
+    position: relative;
+    z-index: 2;
+    max-width: 860px;
+    padding: 3rem 1.5rem;
+}
+
+.hero-cozy-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #ffffff;
+    padding: 0.45rem 1.25rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.hero-cozy-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.3rem, 5.2vw, 4rem);
+    font-weight: 800;
+    line-height: 1.22;
+    color: #ffffff;
+    margin-bottom: 1.4rem;
+    /* Hiệu ứng text-shadow để chữ nổi bật và cực kỳ dễ đọc */
+    text-shadow: 0 3px 18px rgba(0, 0, 0, 0.65), 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.hero-cozy-subtitle {
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    font-weight: 400;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.94);
+    max-width: 700px;
+    margin: 0 auto 2.2rem auto;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+.hero-cozy-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Nút Call-to-action */
+.btn-hero-cta {
+    background-color: var(--color-primary);
+    color: #ffffff !important;
+    border: 2px solid var(--color-primary);
+    border-radius: var(--radius-pill);
+    padding: 0.85rem 2.4rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(44, 95, 45, 0.45);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.btn-hero-cta:hover {
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(44, 95, 45, 0.55);
+}
+
+.btn-hero-secondary {
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #ffffff !important;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: var(--radius-pill);
+    padding: 0.85rem 2.2rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+
+.btn-hero-secondary:hover {
+    background-color: #ffffff;
+    color: var(--color-text) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+    text-shadow: none;
+}
+
+/* --- 5. SECTION HEADINGS & BADGES --- */
+.section-tag {
+    display: inline-block;
+    color: var(--color-wood);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.6rem;
+    position: relative;
+}
+
+.section-title {
+    font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+    font-weight: 700;
+    color: #23211e;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.section-desc {
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+    max-width: 640px;
+}
+
+/* --- 6. ABOUT SECTION (ASYMMETRIC GRID & GOLD ICONS) --- */
+.section-about {
+    padding: 6rem 0;
+    background-color: var(--color-bg);
+}
+
+.about-text-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 1.5rem;
+}
+
+.about-intro-lead {
+    font-size: 1.15rem;
+    color: #3b3936;
+    line-height: 1.75;
+    margin-bottom: 2rem;
+}
+
+/* Danh sách tính năng với icon vàng đồng */
+.about-features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.35rem;
+}
+
+.about-feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.15rem;
+    padding: 1rem;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--color-border-subtle);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.about-feature-item:hover {
+    transform: translateX(6px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* Icon FontAwesome màu vàng đồng theo yêu cầu */
+.gold-icon {
+    color: var(--color-gold) !important;
+    font-size: 1.45rem;
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    background-color: var(--color-gold-subtle);
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.about-feature-item:hover .gold-icon {
+    transform: scale(1.1);
+    background-color: var(--color-gold);
+    color: #ffffff !important;
+}
+
+.about-feature-content h4 {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #23211e;
+    margin-bottom: 0.25rem;
+}
+
+.about-feature-content p {
+    font-size: 0.92rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0;
+    line-height: 1.55;
+}
+
+/* Khung ảnh dọc mô tả không gian homestay */
+.about-image-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.about-vertical-card {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
+    background-color: var(--color-surface);
+    padding: 10px;
+    border: 1px solid var(--color-border);
+}
+
+.about-vertical-img {
+    width: 100%;
+    height: 520px;
+    object-fit: cover;
+    border-radius: calc(var(--radius-lg) - 6px);
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.about-vertical-card:hover .about-vertical-img {
+    transform: scale(1.03);
+}
+
+/* Floating badge trên ảnh dọc */
+.about-floating-badge {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    background-color: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: var(--radius-md);
+    padding: 0.85rem 1.25rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+
+.about-floating-badge .badge-icon {
+    font-size: 1.4rem;
+    color: var(--color-primary);
+}
+
+.about-floating-badge .badge-text h6 {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.1rem;
+    color: #23211e;
+}
+
+.about-floating-badge .badge-text p {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0;
+}
+
+/* --- 7. HIGHLIGHTS & AMENITIES BANNER --- */
+.section-highlights {
+    padding: 3.5rem 0;
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.highlight-box {
+    text-align: center;
+    padding: 1.2rem;
+}
+
+.highlight-icon-circle {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background-color: var(--color-surface-soft);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.highlight-box:hover .highlight-icon-circle {
+    background-color: var(--color-primary);
+    color: #ffffff;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(44, 95, 45, 0.25);
+}
+
+.highlight-box h5 {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+    color: #23211e;
+}
+
+.highlight-box p {
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0;
+}
+
+/* --- 8. FEATURED ROOMS SECTION (MANDATORY CARD RULES) --- */
+.section-rooms {
+    padding: 6rem 0;
+    background-color: var(--color-bg);
+}
+
+/* Card phòng: BẮT BUỘC KHÔNG VIỀN CỨNG, BORDER-RADIUS: 16px, BOX-SHADOW MỀM */
+.room-card {
+    border: none !important;
+    border-radius: var(--radius-card) !important; /* 16px */
+    box-shadow: var(--shadow-card) !important;     /* 0 10px 30px rgba(0,0,0,0.05) */
+    background-color: var(--color-surface);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* Micro-interaction: hover lồi lên nhẹ */
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.room-card:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: var(--shadow-card-hover) !important; /* 0 20px 40px rgba(0,0,0,0.08) */
+}
+
+/* Khung ảnh bên trong Card */
+.room-card-img-wrapper {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+    background-color: #f0ece1;
+}
+
+/* Micro-interaction: ảnh zoom nhẹ scale(1.05) với transition 0.4s ease */
+.room-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease !important;
+    display: block;
+}
+
+.room-card:hover .room-card-img {
+    transform: scale(1.05) !important;
+}
+
+/* Badge trạng thái phòng trên góc ảnh */
+.room-badge-status {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: var(--radius-pill);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    letter-spacing: 0.03em;
+}
+
+.room-badge-status.available {
+    background-color: rgba(44, 95, 45, 0.9);
+    color: #ffffff;
+}
+
+.room-badge-status.maintenance {
+    background-color: rgba(108, 117, 125, 0.9);
+    color: #ffffff;
+}
+
+/* Thân Card phòng */
+.room-card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.room-card-title {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #23211e;
+    margin-bottom: 0.6rem;
+    line-height: 1.35;
+}
+
+.room-card-desc {
+    color: var(--color-text-muted);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    margin-bottom: 1.1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.85em;
+}
+
+/* Tag tiện ích nhỏ trong card */
+.room-card-amenities {
+    display: flex;
+    gap: 0.85rem;
+    color: var(--color-text-light);
+    font-size: 0.85rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.room-card-amenities span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+/* Phần giá và nút Đặt ngay */
+.room-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+}
+
+.room-price-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.room-price-label {
+    font-size: 0.78rem;
+    color: var(--color-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.room-price-value {
+    color: var(--color-primary);
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.room-price-value small {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+}
+
+/* Nút "Đặt ngay" bo tròn dạng viên thuốc (rounded-pill) theo đúng yêu cầu */
+.btn-pill-book {
+    background-color: var(--color-primary);
+    color: #ffffff !important;
+    border: none;
+    border-radius: var(--radius-pill) !important;
+    padding: 0.6rem 1.45rem;
+    font-size: 0.92rem;
+    font-weight: 700;
+    box-shadow: 0 4px 14px rgba(44, 95, 45, 0.25);
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-pill-book:hover {
+    background-color: var(--color-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(44, 95, 45, 0.38);
+}
+
+/* Empty state khi không có phòng */
+.room-empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+}
+
+.room-empty-icon {
+    font-size: 3.5rem;
+    color: var(--color-wood);
+    margin-bottom: 1.2rem;
+}
+
+/* --- 9. BUTTON SYSTEM (COZY PALETTE) --- */
+.btn-cozy-primary {
+    background-color: var(--color-primary);
+    color: #ffffff !important;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-pill);
+    padding: 0.6rem 1.4rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+}
+
+.btn-cozy-primary:hover {
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(44, 95, 45, 0.28);
+}
+
+.btn-cozy-secondary {
+    background-color: var(--color-wood);
+    color: #ffffff !important;
+    border: 1px solid var(--color-wood);
+    border-radius: var(--radius-pill);
+    padding: 0.6rem 1.4rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+}
+
+.btn-cozy-secondary:hover {
+    background-color: var(--color-wood-hover);
+    border-color: var(--color-wood-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(151, 123, 90, 0.28);
+}
+
+.btn-cozy-outline {
+    background-color: transparent;
+    color: var(--color-wood) !important;
+    border: 1.5px solid var(--color-wood);
+    border-radius: var(--radius-pill);
+    padding: 0.55rem 1.35rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+}
+
+.btn-cozy-outline:hover {
+    background-color: var(--color-wood);
+    color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+/* --- 10. FOOTER STYLING (WARM & ELEGANT) --- */
+.footer-cozy {
+    background-color: #211e1b;
+    color: #ded8cf;
+    padding-top: 4.5rem;
+    padding-bottom: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    position: static !important;
+    white-space: normal !important;
+    line-height: normal !important;
+    margin-top: auto;
+}
+
+.footer-cozy h5,
+.footer-cozy h6 {
+    color: #ffffff;
+    font-family: var(--font-heading);
+    margin-bottom: 1.25rem;
+    font-size: 1.15rem;
+}
+
+.footer-cozy p {
+    color: #aba49a;
+    font-size: 0.92rem;
+    line-height: 1.65;
+}
+
+.footer-cozy a {
+    color: #c7c0b5;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-cozy a:hover {
+    color: var(--color-gold);
+    transform: translateX(3px);
+}
+
+.footer-links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links-list li {
+    margin-bottom: 0.75rem;
+}
+
+.footer-contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.85rem;
+    font-size: 0.92rem;
+    color: #aba49a;
+}
+
+.footer-contact-item i {
+    color: var(--color-gold);
+    margin-top: 0.2rem;
+    font-size: 1rem;
+}
+
+.footer-social-icons {
+    display: flex;
+    gap: 0.85rem;
+    margin-top: 1.2rem;
+}
+
+.footer-social-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.08);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff !important;
+    transition: all 0.3s ease;
+}
+
+.footer-social-icon:hover {
+    background-color: var(--color-gold);
+    color: #211e1b !important;
+    transform: translateY(-3px) !important;
+}
+
+.footer-divider {
+    border-color: rgba(255, 255, 255, 0.1);
+    margin: 3rem 0 1.5rem 0;
+}
+
+.footer-copyright {
+    color: #8c857b;
+    font-size: 0.88rem;
+    text-align: center;
+}
+
+/* --- 11. GENERAL FORMS & RESPONSIVE TWEAKS --- */
+.form-control,
+.form-select {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background-color: #ffffff;
+    padding: 0.65rem 1rem;
+    color: var(--color-text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 0.2rem rgba(44, 95, 45, 0.15);
+    background-color: #ffffff;
+}
+
+@media (max-width: 991.98px) {
+    .hero-cozy {
+        min-height: 70vh;
+        border-bottom-left-radius: 28px;
+        border-bottom-right-radius: 28px;
+    }
+
+    .about-text-column {
+        padding-right: 0;
+        margin-bottom: 2.5rem;
+    }
+
+    .about-vertical-img {
+        height: 380px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .hero-cozy {
+        min-height: 65vh;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+
+    .hero-cozy-content {
+        padding: 2rem 1rem;
+    }
+
+    .btn-hero-cta,
+    .btn-hero-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .room-card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.85rem;
+    }
+
+    .btn-pill-book {
+        width: 100%;
+        justify-content: center;
+    }
+}

@@ -1,0 +1,60 @@
+## ASP.NET Core / .NET gitignore - Finn Homestay
+
+# Build output
+bin/
+obj/
+out/
+
+# Visual Studio & Rider IDE files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vs/
+.vs/
+*.DotSettings.user
+.idea/
+*.ncrunchproject
+*.ncrunch*
+*.cruser
+
+# NuGet packages
+*.nupkg
+**/packages/
+!**/packages/repositories.config
+
+# Publishing & Deployment output
+publish/
+PublishProfiles/
+
+# Logs & runtime files
+*.log
+*.trace
+
+# ASP.NET Core User Secrets (quan trọng: không push key bí mật)
+secrets.json
+appsettings.Development.json
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Node.js (nếu dùng npm/yarn build frontend)
+node_modules/
+
+# Certificates
+*.pfx
+*.p12
+*.pem
+*.key
+
+# Entity Framework Core migrations lock (giữ lại file migration .cs nhưng bỏ snapshot tạm)
+# Bỏ ghi chú dòng dưới nếu bạn muốn loại trừ snapshot EF:
+# **/Migrations/*Snapshot.cs
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml

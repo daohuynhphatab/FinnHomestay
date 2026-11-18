@@ -1,0 +1,195 @@
+@model FinnHomestay.Models.Booking
+
+@{
+    ViewData["Title"] = $"Chỉnh sửa Đơn Đặt Phòng #{Model.Id}";
+    bool isCustomer = ViewBag.IsCustomer == true;
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-9 col-lg-7">
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">✏️ Chỉnh Sửa Đơn Đặt Phòng #@Model.Id</h4>
+                @switch (Model.Status)
+                {
+                    case "Pending":
+                        <span class="badge bg-dark text-warning">⏳ Chờ duyệt</span>
+                        break;
+                    case "Confirmed":
+                        <span class="badge bg-success">✔ Đã xác nhận</span>
+                        break;
+                    case "Cancelled":
+                        <span class="badge bg-danger">✖ Đã hủy</span>
+                        break;
+                    default:
+                        <span class="badge bg-secondary">@Model.Status</span>
+                        break;
+                }
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Edit" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Id" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <!-- Trạng thái đơn đặt -->
+                    @if (isCustomer)
+                    {
+                        <input type="hidden" asp-for="Status" />
+                        <div class="mb-4 p-3 bg-light rounded border">
+                            <label class="form-label fw-bold text-muted">Trạng thái đơn hiện tại:</label>
+                            <div>
+                                @switch (Model.Status)
+                                {
+                                    case "Pending":
+                                        <span class="badge bg-warning text-dark px-3 py-2">⏳ Chờ nhân viên xét duyệt</span>
+                                        break;
+                                    case "Confirmed":
+                                        <span class="badge bg-success px-3 py-2">✔ Đã được duyệt thành công</span>
+                                        break;
+                                    case "Cancelled":
+                                        <span class="badge bg-danger px-3 py-2">✖ Đã hủy</span>
+                                        break;
+                                    default:
+                                        <span class="badge bg-secondary px-3 py-2">@Model.Status</span>
+                                        break;
+                                }
+                            </div>
+                            <small class="text-muted mt-1 d-block">Khách hàng không thể tự ý chuyển trạng thái đơn sang đã xác nhận.</small>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mb-4 p-3 bg-light rounded border">
+                            <label asp-for="Status" class="form-label fw-bold text-primary">Cập nhật Trạng thái Đơn (Admin / Staff)</label>
+                            <select asp-for="Status" class="form-select form-select-lg">
+                                <option value="Pending">⏳ Chờ duyệt (Pending)</option>
+                                <option value="Confirmed">✔ Đã xác nhận (Confirmed)</option>
+                                <option value="Cancelled">✖ Đã hủy (Cancelled)</option>
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger small"></span>
+                        </div>
+                    }
+
+                    <!-- Khách hàng -->
+                    @if (isCustomer)
+                    {
+                        <input type="hidden" asp-for="CustomerId" />
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Khách hàng:</label>
+                            <input type="text" class="form-control bg-light" value="@(Model.Customer?.FullName ?? User.Identity?.Name)" readonly />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mb-3">
+                            <label asp-for="CustomerId" class="form-label fw-semibold"></label>
+                            <select asp-for="CustomerId" asp-items="ViewBag.Users" class="form-select">
+                                <option value="">-- Chọn khách hàng --</option>
+                            </select>
+                            <span asp-validation-for="CustomerId" class="text-danger small"></span>
+                        </div>
+                    }
+
+                    <!-- Phòng đặt -->
+                    <div class="mb-3">
+                        <label asp-for="RoomId" class="form-label fw-semibold"></label>
+                        <select asp-for="RoomId" asp-items="ViewBag.Rooms" class="form-select" id="roomSelect">
+                            <option value="">-- Chọn phòng --</option>
+                        </select>
+                        <span asp-validation-for="RoomId" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Ngày Check-in & Check-out -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="CheckInDate" class="form-label fw-semibold"></label>
+                            <input asp-for="CheckInDate" type="date" class="form-control" id="checkInDate"
+                                   value="@Model.CheckInDate.ToString("yyyy-MM-dd")" />
+                            <span asp-validation-for="CheckInDate" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="CheckOutDate" class="form-label fw-semibold"></label>
+                            <input asp-for="CheckOutDate" type="date" class="form-control" id="checkOutDate"
+                                   value="@Model.CheckOutDate.ToString("yyyy-MM-dd")" />
+                            <span asp-validation-for="CheckOutDate" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <!-- Tổng tiền -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label asp-for="TotalPrice" class="form-label fw-semibold mb-0"></label>
+                            <span class="badge bg-light text-muted border" id="nightsBadge">Số đêm</span>
+                        </div>
+                        <div class="input-group">
+                            <input asp-for="TotalPrice" class="form-control" type="number" step="1000" id="totalPriceInput" />
+                            <span class="input-group-text">VNĐ</span>
+                            <button class="btn btn-outline-secondary" type="button" id="btnAutoCalc" title="Tính lại tiền dựa trên giá phòng x số đêm">
+                                ⚡ Tính lại
+                            </button>
+                        </div>
+                        <span asp-validation-for="TotalPrice" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between pt-3 border-top">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            ← Quay lại danh sách
+                        </a>
+                        <button type="submit" class="btn btn-success px-4">
+                            Lưu thay đổi
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const roomPrices = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.RoomPriceMap ?? new Dictionary<string, decimal>()));
+
+        const roomSelect = document.getElementById('roomSelect');
+        const checkInInput = document.getElementById('checkInDate');
+        const checkOutInput = document.getElementById('checkOutDate');
+        const totalPriceInput = document.getElementById('totalPriceInput');
+        const nightsBadge = document.getElementById('nightsBadge');
+        const btnAutoCalc = document.getElementById('btnAutoCalc');
+
+        function updateNightsAndPrice(recalcPrice = false) {
+            const roomId = roomSelect.value;
+            const checkInVal = checkInInput.value;
+            const checkOutVal = checkOutInput.value;
+
+            if (!checkInVal || !checkOutVal) return;
+
+            const checkIn = new Date(checkInVal);
+            const checkOut = new Date(checkOutVal);
+
+            const diffTime = checkOut.getTime() - checkIn.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays > 0) {
+                nightsBadge.textContent = diffDays + ' đêm';
+                if (recalcPrice) {
+                    const pricePerNight = roomPrices[roomId] || 0;
+                    if (pricePerNight > 0) {
+                        totalPriceInput.value = diffDays * pricePerNight;
+                    }
+                }
+            } else {
+                nightsBadge.textContent = 'Ngày không hợp lệ';
+            }
+        }
+
+        roomSelect.addEventListener('change', () => updateNightsAndPrice(false));
+        checkInInput.addEventListener('change', () => updateNightsAndPrice(false));
+        checkOutInput.addEventListener('change', () => updateNightsAndPrice(false));
+        btnAutoCalc.addEventListener('click', () => updateNightsAndPrice(true));
+
+        updateNightsAndPrice(false);
+    </script>
+}

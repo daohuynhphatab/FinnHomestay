@@ -1,0 +1,253 @@
+﻿@model IEnumerable<FinnHomestay.Models.Room>
+@{
+    ViewData["Title"] = "Nghỉ dưỡng ấm cúng & Tiện nghi";
+    ViewData["IsFullWidth"] = true; // Cho phép Hero banner tràn toàn màn hình với bo góc cong
+}
+
+<!-- =================================================================
+     1. HERO BANNER SECTION (Chiểu cao min-height: 80vh, bo cong cạnh dưới)
+     ================================================================= -->
+<section class="hero-cozy">
+    <div class="container hero-cozy-content">
+        <div class="hero-cozy-badge">
+            <i class="fa-solid fa-feather-pointed"></i>
+            <span>Chốn bình yên giữa lòng thành phố</span>
+        </div>
+        <h1 class="hero-cozy-title">
+            Chào mừng đến với<br />Finn Homestay
+        </h1>
+        <p class="hero-cozy-subtitle">
+            Trải nghiệm kỳ nghỉ trọn vẹn trong không gian mộc mạc, ấm cúng và đầy đủ tiện nghi hiện đại. Đặt phòng nhanh chóng và an tâm tận hưởng từng khoảnh khắc.
+        </p>
+        <div class="hero-cozy-actions">
+            <a href="#featured" class="btn-hero-cta">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span>Khám phá phòng ngay</span>
+            </a>
+            <a href="#about" class="btn-hero-secondary">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>Về chúng tôi</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- =================================================================
+     2. SECTION TIỆN ÍCH TRẢI NGHIỆM (Highlights Banner)
+     ================================================================= -->
+<section class="section-highlights" id="amenities">
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+            <div class="col-6 col-md-3">
+                <div class="highlight-box">
+                    <div class="highlight-icon-circle">
+                        <i class="fa-solid fa-wifi"></i>
+                    </div>
+                    <h5>Wi-Fi Siêu Tốc</h5>
+                    <p>Internet cáp quang ổn định, thoải mái làm việc &amp; giải trí</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="highlight-box">
+                    <div class="highlight-icon-circle">
+                        <i class="fa-solid fa-mug-hot"></i>
+                    </div>
+                    <h5>Cà Phê Sáng</h5>
+                    <p>Thưởng thức trà &amp; cà phê thơm ngon mỗi bình minh</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="highlight-box">
+                    <div class="highlight-icon-circle">
+                        <i class="fa-solid fa-kitchen-set"></i>
+                    </div>
+                    <h5>Bếp Tiện Nghi</h5>
+                    <p>Khu vực bếp chung sạch sẽ, tự do nấu nướng món yêu thích</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="highlight-box">
+                    <div class="highlight-icon-circle">
+                        <i class="fa-solid fa-shield-heart"></i>
+                    </div>
+                    <h5>An Toàn &amp; Yên Tĩnh</h5>
+                    <p>Không gian biệt lập, an ninh 24/7 và giấc ngủ trọn vẹn</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =================================================================
+     3. SECTION GIỚI THIỆU (Lưới bất đối xứng - Icon vàng đồng & Ảnh dọc)
+     ================================================================= -->
+<section class="section-about" id="about">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <!-- Cột chữ (Một bên là text giới thiệu kèm icon vàng đồng) -->
+            <div class="col-lg-7 about-text-column">
+                <span class="section-tag">Về Finn Homestay</span>
+                <h2 class="section-title">
+                    Không gian nghỉ dưỡng ấm cúng, thư thái như chính ngôi nhà của bạn
+                </h2>
+                <p class="about-intro-lead">
+                    Được xây dựng với tình yêu dành cho sự bình yên và mộc mạc, <strong>Finn Homestay</strong> là điểm dừng chân lý tưởng dành cho những ai tìm kiếm sự thư giãn sau những bộn bề cuộc sống. Mỗi góc nhỏ tại homestay đều được chăm chút tỉ mỉ từ ánh sáng, cây xanh đến nội thất gỗ tự nhiên ấm áp.
+                </p>
+
+                <!-- Lưới tính năng với icon FontAwesome màu vàng đồng -->
+                <div class="about-features-list">
+                    <div class="about-feature-item">
+                        <div class="gold-icon">
+                            <i class="fa-solid fa-seedling"></i>
+                        </div>
+                        <div class="about-feature-content">
+                            <h4>Không gian xanh mát &amp; Ban công thoáng đãng</h4>
+                            <p>Tận hưởng không khí trong lành với nhiều cây xanh và góc ban công ngắm nhìn mây trời bình yên.</p>
+                        </div>
+                    </div>
+
+                    <div class="about-feature-item">
+                        <div class="gold-icon">
+                            <i class="fa-solid fa-couch"></i>
+                        </div>
+                        <div class="about-feature-content">
+                            <h4>Nội thất gỗ mộc mạc &amp; Tiện nghi đầy đủ</h4>
+                            <p>Giường nệm cao cấp, điều hòa hai chiều, phòng tắm riêng biệt với nước nóng sẵn sàng 24/24.</p>
+                        </div>
+                    </div>
+
+                    <div class="about-feature-item">
+                        <div class="gold-icon">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </div>
+                        <div class="about-feature-content">
+                            <h4>Vị trí thuận tiện di chuyển</h4>
+                            <p>Nằm gần trung tâm, xung quanh có nhiều quán cà phê xinh xắn và các điểm tham quan nổi tiếng.</p>
+                        </div>
+                    </div>
+
+                    <div class="about-feature-item">
+                        <div class="gold-icon">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <div class="about-feature-content">
+                            <h4>Đón tiếp thân thiện, chu đáo như người nhà</h4>
+                            <p>Chúng tôi luôn sẵn lòng hướng dẫn địa điểm ăn uống bản địa và hỗ trợ bạn trong suốt kỳ nghỉ.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cột ảnh (Một bên là 1 ảnh dọc mô tả không gian homestay) -->
+            <div class="col-lg-5 about-image-column">
+                <div class="about-vertical-card">
+                    <img src="/photos/about/about-space.jpg"
+                         class="about-vertical-img"
+                         alt="Không gian thư thái tại Finn Homestay"
+                         onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1540518614846-7ede433c4ef4?auto=format&fit=crop&w=800&q=80';" />
+                    
+                    <!-- Floating badge nổi trên ảnh dọc -->
+                    <div class="about-floating-badge">
+                        <i class="fa-solid fa-award badge-icon"></i>
+                        <div class="badge-text">
+                            <h6>Đánh giá 4.9 / 5.0</h6>
+                            <p>Hơn 500+ khách hàng hài lòng</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =================================================================
+     4. SECTION PHÒNG NỔI BẬT (Card phòng bo góc 16px, không viền, bóng mờ, hover zoom)
+     ================================================================= -->
+<section class="section-rooms" id="featured">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="section-tag">Khám phá không gian</span>
+            <h2 class="section-title">Phòng Nghỉ Nổi Bật</h2>
+            <p class="section-desc mx-auto">
+                Lựa chọn không gian phù hợp cho chuyến đi của bạn. Tất cả các phòng đều được trang bị đầy đủ tiện nghi tiêu chuẩn và dọn dẹp sạch sẽ mỗi ngày.
+            </p>
+        </div>
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="row g-4">
+                @foreach (var room in Model)
+                {
+                    var img = string.IsNullOrWhiteSpace(room.ImageUrl) ? "/photos/rooms/default-room.jpg" : room.ImageUrl;
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card room-card">
+                            <!-- Khung ảnh có hiệu ứng hover zoom -->
+                            <div class="room-card-img-wrapper">
+                                <span class="room-badge-status @(room.Status == "Available" ? "available" : "maintenance")">
+                                    <i class="fa-solid @(room.Status == "Available" ? "fa-circle-check" : "fa-wrench") me-1"></i>
+                                    @(room.Status == "Available" ? "Còn phòng" : "Bảo trì")
+                                </span>
+                                <img src="@img"
+                                     class="room-card-img"
+                                     alt="@room.Name"
+                                     onerror="this.onerror=null;this.src='/photos/rooms/default-room.jpg';" />
+                            </div>
+
+                            <!-- Nội dung chi tiết phòng -->
+                            <div class="room-card-body">
+                                <h3 class="room-card-title">@room.Name</h3>
+                                <p class="room-card-desc">
+                                    @(string.IsNullOrWhiteSpace(room.Description) 
+                                        ? "Phòng nghỉ ấm cúng với ban công thoáng mát, view sân vườn yên tĩnh và đầy đủ tiện nghi sinh hoạt." 
+                                        : room.Description)
+                                </p>
+
+                                <!-- Tiện ích cơ bản trong phòng -->
+                                <div class="room-card-amenities">
+                                    <span><i class="fa-solid fa-wifi text-muted"></i> Wi-Fi</span>
+                                    <span><i class="fa-solid fa-snowflake text-muted"></i> Điều hòa</span>
+                                    <span><i class="fa-solid fa-bed text-muted"></i> Giường King</span>
+                                </div>
+
+                                <!-- Giá và nút Đặt ngay (dạng viên thuốc rounded-pill) -->
+                                <div class="room-card-footer">
+                                    <div class="room-price-box">
+                                        <span class="room-price-label">Giá mỗi đêm</span>
+                                        <span class="room-price-value">
+                                            @room.Price.ToString("N0") <small>VNĐ</small>
+                                        </span>
+                                    </div>
+                                    @if (room.Status == "Available")
+                                    {
+                                        <a asp-controller="Booking" asp-action="Create" asp-route-roomId="@room.Id"
+                                           class="btn-pill-book">
+                                            <span>Đặt ngay</span>
+                                            <i class="fa-solid fa-arrow-right"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-secondary rounded-pill px-3 py-2 disabled" disabled>
+                                            Tạm ngưng
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="room-empty-state">
+                <i class="fa-solid fa-bed room-empty-icon"></i>
+                <h4 class="font-heading mb-2">Hiện tại chưa có phòng sẵn sàng đón khách</h4>
+                <p class="text-muted mb-4">Các phòng đang trong quá trình bảo dưỡng hoặc đã kín lịch đặt. Vui lòng quay lại sau ít phút hoặc liên hệ với chúng tôi để được tư vấn!</p>
+                <a href="#about" class="btn-cozy-secondary">
+                    <i class="fa-solid fa-phone me-1"></i> Liên hệ homestay
+                </a>
+            </div>
+        }
+    </div>
+</section>

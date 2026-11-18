@@ -1,0 +1,73 @@
+@model FinnHomestay.Models.UserEditViewModel
+
+@{
+    ViewData["Title"] = $"Chỉnh sửa tài khoản: {Model.FullName}";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0">✏️ Chỉnh Sửa Tài Khoản #@Model.Id</h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Edit" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Id" />
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3" role="alert"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="FullName" class="form-label fw-semibold"></label>
+                        <input asp-for="FullName" class="form-control" />
+                        <span asp-validation-for="FullName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-semibold"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Phone" class="form-label fw-semibold"></label>
+                        <input asp-for="Phone" class="form-control" />
+                        <span asp-validation-for="Phone" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Role" class="form-label fw-semibold"></label>
+                        <select asp-for="Role" class="form-select">
+                            <option value="Customer">👤 Khách hàng (Customer)</option>
+                            <option value="Staff">💼 Nhân viên (Staff)</option>
+                            <option value="Admin">👑 Quản trị viên (Admin)</option>
+                        </select>
+                        <span asp-validation-for="Role" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Khu vực Đổi Mật Khẩu với cảnh báo rõ ràng -->
+                    <div class="mb-4 p-3 bg-light rounded border border-warning">
+                        <label asp-for="NewPassword" class="form-label fw-semibold text-danger">Đổi Mật Khẩu Mới (Tùy chọn)</label>
+                        <input asp-for="NewPassword" class="form-control" placeholder="Nhập mật khẩu mới nếu muốn đổi..." />
+                        <span asp-validation-for="NewPassword" class="text-danger small"></span>
+                        <div class="form-text text-dark">
+                            ⚠️ <strong>Lưu ý:</strong> Để trống ô này nếu bạn <u>không</u> muốn thay đổi mật khẩu của tài khoản. Hệ thống sẽ giữ nguyên mật khẩu hiện tại.
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between pt-3 border-top">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            ← Quay lại danh sách
+                        </a>
+                        <button type="submit" class="btn btn-success px-4">
+                            Lưu thay đổi
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
