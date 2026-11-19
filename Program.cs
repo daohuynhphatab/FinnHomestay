@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using FinnHomestay.Data;
+using FinnHomestay.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Đăng ký Service quản lý và tự động đồng bộ trạng thái phòng
+builder.Services.AddScoped<IRoomStatusService, RoomStatusService>();
 
 // Cấu hình Cookie Authentication (không dùng ASP.NET Core Identity)
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

@@ -906,3 +906,28 @@ a:hover {
         justify-content: center;
     }
 }
+
+/* =================================================================
+   TABLE ACTION BUTTONS (Đồng bộ UI nút bấm thao tác trên bảng)
+   ================================================================= */
+.btn-action-room,
+.btn-action-custom {
+    min-width: 72px;
+    height: 32px;
+    padding: 0 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.825rem;
+    font-weight: 500;
+    border-radius: 6px !important;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+}
+.btn-action-room:hover,
+.btn-action-custom:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}

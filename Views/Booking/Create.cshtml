@@ -44,6 +44,15 @@
                             <option value="">-- Chọn phòng muốn đặt --</option>
                         </select>
                         <span asp-validation-for="RoomId" class="text-danger small"></span>
+
+                        <!-- Nút/Badge TikTok nổi bật khi phòng có TiktokLink -->
+                        <div id="tiktokContainer" class="mt-2" style="@(string.IsNullOrWhiteSpace(ViewBag.SelectedRoomTiktok) ? "display: none;" : "")">
+                            <a id="tiktokButton" href="@(ViewBag.SelectedRoomTiktok ?? "#")" target="_blank" rel="noopener noreferrer"
+                               class="btn btn-dark btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill shadow-sm text-decoration-none">
+                                <span class="fw-semibold">🎥 Xem video trực quan trên TikTok</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square small text-warning"></i>
+                            </a>
+                        </div>
                     </div>
 
                     <!-- Ngày Check-in & Check-out -->
@@ -115,8 +124,9 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script>
-        // Dữ liệu giá phòng từ Controller
+        // Dữ liệu giá phòng và link video TikTok từ Controller
         const roomPrices = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.RoomPriceMap ?? new Dictionary<string, decimal>()));
+        const roomTiktoks = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.RoomTiktokMap ?? new Dictionary<string, string>()));
 
         const roomSelect = document.getElementById('roomSelect');
         const checkInInput = document.getElementById('checkInDate');
@@ -124,6 +134,21 @@
         const totalPriceInput = document.getElementById('totalPriceInput');
         const nightsBadge = document.getElementById('nightsBadge');
         const btnAutoCalc = document.getElementById('btnAutoCalc');
+        const tiktokContainer = document.getElementById('tiktokContainer');
+        const tiktokButton = document.getElementById('tiktokButton');
+
+        function updateTiktokButton() {
+            if (!tiktokContainer || !tiktokButton) return;
+            const roomId = roomSelect.value;
+            const tiktokUrl = roomTiktoks[roomId];
+            if (tiktokUrl && tiktokUrl.trim() !== '') {
+                tiktokButton.href = tiktokUrl;
+                tiktokContainer.style.display = 'block';
+            } else {
+                tiktokContainer.style.display = 'none';
+                tiktokButton.href = '#';
+            }
+        }
 
         function calculateTotalPrice() {
             const roomId = roomSelect.value;
@@ -149,13 +174,17 @@
             }
         }
 
-        roomSelect.addEventListener('change', calculateTotalPrice);
+        roomSelect.addEventListener('change', function() {
+            calculateTotalPrice();
+            updateTiktokButton();
+        });
         checkInInput.addEventListener('change', calculateTotalPrice);
         checkOutInput.addEventListener('change', calculateTotalPrice);
         btnAutoCalc.addEventListener('click', calculateTotalPrice);
 
         if (roomSelect.value) {
             calculateTotalPrice();
+            updateTiktokButton();
         }
     </script>
 }

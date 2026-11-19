@@ -50,6 +50,9 @@
                                     case "Cancelled":
                                         <span class="badge bg-danger px-3 py-2">✖ Đã hủy</span>
                                         break;
+                                    case "Completed":
+                                        <span class="badge bg-info text-dark px-3 py-2">🏁 Đã trả phòng / Check-out</span>
+                                        break;
                                     default:
                                         <span class="badge bg-secondary px-3 py-2">@Model.Status</span>
                                         break;
@@ -65,6 +68,7 @@
                             <select asp-for="Status" class="form-select form-select-lg">
                                 <option value="Pending">⏳ Chờ duyệt (Pending)</option>
                                 <option value="Confirmed">✔ Đã xác nhận (Confirmed)</option>
+                                <option value="Completed">🏁 Đã trả phòng / Check-out (Completed)</option>
                                 <option value="Cancelled">✖ Đã hủy (Cancelled)</option>
                             </select>
                             <span asp-validation-for="Status" class="text-danger small"></span>
@@ -98,6 +102,15 @@
                             <option value="">-- Chọn phòng --</option>
                         </select>
                         <span asp-validation-for="RoomId" class="text-danger small"></span>
+
+                        <!-- Nút/Badge TikTok nổi bật khi phòng có TiktokLink -->
+                        <div id="tiktokContainer" class="mt-2" style="@(string.IsNullOrWhiteSpace(ViewBag.SelectedRoomTiktok) ? "display: none;" : "")">
+                            <a id="tiktokButton" href="@(ViewBag.SelectedRoomTiktok ?? "#")" target="_blank" rel="noopener noreferrer"
+                               class="btn btn-dark btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill shadow-sm text-decoration-none">
+                                <span class="fw-semibold">🎥 Xem video trực quan trên TikTok</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square small text-warning"></i>
+                            </a>
+                        </div>
                     </div>
 
                     <!-- Ngày Check-in & Check-out -->
@@ -151,6 +164,7 @@
 
     <script>
         const roomPrices = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.RoomPriceMap ?? new Dictionary<string, decimal>()));
+        const roomTiktoks = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.RoomTiktokMap ?? new Dictionary<string, string>()));
 
         const roomSelect = document.getElementById('roomSelect');
         const checkInInput = document.getElementById('checkInDate');
@@ -158,6 +172,21 @@
         const totalPriceInput = document.getElementById('totalPriceInput');
         const nightsBadge = document.getElementById('nightsBadge');
         const btnAutoCalc = document.getElementById('btnAutoCalc');
+        const tiktokContainer = document.getElementById('tiktokContainer');
+        const tiktokButton = document.getElementById('tiktokButton');
+
+        function updateTiktokButton() {
+            if (!tiktokContainer || !tiktokButton) return;
+            const roomId = roomSelect.value;
+            const tiktokUrl = roomTiktoks[roomId];
+            if (tiktokUrl && tiktokUrl.trim() !== '') {
+                tiktokButton.href = tiktokUrl;
+                tiktokContainer.style.display = 'block';
+            } else {
+                tiktokContainer.style.display = 'none';
+                tiktokButton.href = '#';
+            }
+        }
 
         function updateNightsAndPrice(recalcPrice = false) {
             const roomId = roomSelect.value;
@@ -185,11 +214,17 @@
             }
         }
 
-        roomSelect.addEventListener('change', () => updateNightsAndPrice(false));
+        roomSelect.addEventListener('change', () => {
+            updateNightsAndPrice(false);
+            updateTiktokButton();
+        });
         checkInInput.addEventListener('change', () => updateNightsAndPrice(false));
         checkOutInput.addEventListener('change', () => updateNightsAndPrice(false));
         btnAutoCalc.addEventListener('click', () => updateNightsAndPrice(true));
 
         updateNightsAndPrice(false);
+        if (roomSelect.value) {
+            updateTiktokButton();
+        }
     </script>
 }

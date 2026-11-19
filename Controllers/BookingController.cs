@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FinnHomestay.Data;
 using FinnHomestay.Models;
+using FinnHomestay.Services;
 
 namespace FinnHomestay.Controllers;
 
@@ -12,15 +13,20 @@ namespace FinnHomestay.Controllers;
 public class BookingController : Controller
 {
     private readonly AppDbContext _context;
+    private readonly IRoomStatusService _roomStatusService;
 
-    public BookingController(AppDbContext context)
+    public BookingController(AppDbContext context, IRoomStatusService roomStatusService)
     {
         _context = context;
+        _roomStatusService = roomStatusService;
     }
 
     // GET: /Booking hoặc /Booking/Index?statusFilter=...&searchString=...
     public async Task<IActionResult> Index(string? statusFilter, string? searchString)
     {
+        // Tự động quét và cập nhật lại trạng thái phòng nếu khách đã check-out hoặc đơn bị hủy
+        await _roomStatusService.SyncAllRoomsStatusAsync();
+
         ViewData["StatusFilter"] = statusFilter;
         ViewData["SearchString"] = searchString;
 
@@ -163,6 +169,10 @@ public class BookingController : Controller
         {
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
+
+            // Tự động chuyển Status của phòng sang "Occupied" (Đã đặt)
+            await _roomStatusService.MarkRoomAsOccupiedAsync(booking.RoomId);
+
             TempData["SuccessMessage"] = "Tạo đơn đặt phòng mới thành công!";
             return RedirectToAction(nameof(Index));
         }
@@ -265,8 +275,17 @@ public class BookingController : Controller
         {
             try
             {
+                int oldRoomId = existingBooking.RoomId;
                 _context.Update(booking);
                 await _context.SaveChangesAsync();
+
+                // Cập nhật lại trạng thái phòng nếu đơn bị hủy hoặc đổi phòng/đổi ngày
+                await _roomStatusService.SyncRoomStatusAsync(booking.RoomId);
+                if (oldRoomId != booking.RoomId)
+                {
+                    await _roomStatusService.SyncRoomStatusAsync(oldRoomId);
+                }
+
                 TempData["SuccessMessage"] = $"Cập nhật đơn đặt phòng #{booking.Id} thành công!";
                 return RedirectToAction(nameof(Index));
             }
@@ -307,8 +326,13 @@ public class BookingController : Controller
             }
         }
 
+        var roomId = booking.RoomId;
         _context.Bookings.Remove(booking);
         await _context.SaveChangesAsync();
+
+        // Tự động giải phóng phòng về "Available" nếu không còn đơn đặt nào khác
+        await _roomStatusService.SyncRoomStatusAsync(roomId);
+
         TempData["SuccessMessage"] = $"Đã xóa đơn đặt phòng #{id} thành công!";
         return RedirectToAction(nameof(Index));
     }
@@ -329,7 +353,7 @@ public class BookingController : Controller
     {
         var rooms = await _context.Rooms
             .OrderBy(r => r.Name)
-            .Select(r => new { r.Id, r.Name, r.Price })
+            .Select(r => new { r.Id, r.Name, r.Price, r.TiktokLink })
             .ToListAsync();
 
         var users = await _context.Users
@@ -341,6 +365,13 @@ public class BookingController : Controller
         ViewBag.Users = new SelectList(users, "Id", "DisplayName", selectedCustomerId);
 
         ViewBag.RoomPriceMap = rooms.ToDictionary(r => r.Id.ToString(), r => r.Price);
+        ViewBag.RoomTiktokMap = rooms.ToDictionary(r => r.Id.ToString(), r => r.TiktokLink ?? string.Empty);
+
+        if (selectedRoomId.HasValue && selectedRoomId.Value > 0)
+        {
+            var selected = rooms.FirstOrDefault(r => r.Id == selectedRoomId.Value);
+            ViewBag.SelectedRoomTiktok = selected?.TiktokLink;
+        }
     }
 
     // Helper: Khởi tạo tài khoản mẫu và phòng mẫu nếu DB trống
@@ -386,7 +417,8 @@ public class BookingController : Controller
                     Description = "Phòng view sân vườn thoáng mát, giường đôi 1m8, máy lạnh, vệ sinh khép kín.",
                     Price = 350000,
                     Status = "Available",
-                    ImageUrl = "https://images.unsplash.com/photo-1590490360182-c33d57733427"
+                    ImageUrl = "https://images.unsplash.com/photo-1590490360182-c33d57733427",
+                    TiktokLink = "https://www.tiktok.com/@finnhomestay/video/7345678901234567890"
                 },
                 new Room
                 {
@@ -394,7 +426,8 @@ public class BookingController : Controller
                     Description = "Phòng rộng rãi cho 2 người, trang bị bàn làm việc, tủ lạnh mini.",
                     Price = 450000,
                     Status = "Available",
-                    ImageUrl = "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b"
+                    ImageUrl = "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
+                    TiktokLink = "https://www.tiktok.com/@finnhomestay/video/7345678901234567891"
                 }
             );
             await _context.SaveChangesAsync();

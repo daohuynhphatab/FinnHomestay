@@ -4,6 +4,26 @@
     ViewData["Title"] = "Quản lý Phòng";
 }
 
+<style>
+    .btn-action-room {
+        width: 72px;
+        height: 32px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        font-weight: 500;
+        border-radius: 6px !important;
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    .btn-action-room:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h2 class="fw-bold mb-1">🏨 Quản lý Danh sách Phòng</h2>
@@ -72,7 +92,7 @@
                             <th>Mô tả</th>
                             <th>Giá / đêm</th>
                             <th class="text-center">Trạng thái</th>
-                            <th style="width: 160px;" class="text-center">Thao tác</th>
+                            <th style="width: 250px;" class="text-center">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,7 +109,17 @@
                                         <span class="badge bg-light text-muted border">No image</span>
                                     }
                                 </td>
-                                <td class="fw-semibold">@item.Name</td>
+                                <td>
+                                    <div class="fw-semibold">@item.Name</div>
+                                    @if (!string.IsNullOrEmpty(item.TiktokLink))
+                                    {
+                                        <a href="@item.TiktokLink" target="_blank" rel="noopener noreferrer" 
+                                           class="badge bg-dark text-white text-decoration-none mt-1 d-inline-flex align-items-center gap-1"
+                                           title="Xem video trên TikTok">
+                                            <i class="fa-brands fa-tiktok text-info"></i> TikTok
+                                        </a>
+                                    }
+                                </td>
                                 <td class="text-muted text-truncate" style="max-width: 250px;">
                                     @(string.IsNullOrEmpty(item.Description) ? "Chưa có mô tả" : item.Description)
                                 </td>
@@ -98,6 +128,10 @@
                                     @if (item.Status == "Available")
                                     {
                                         <span class="badge bg-success">Còn trống</span>
+                                    }
+                                    else if (item.Status == "Occupied")
+                                    {
+                                        <span class="badge bg-danger">Đã đặt</span>
                                     }
                                     else if (item.Status == "Maintenance")
                                     {
@@ -109,18 +143,22 @@
                                     }
                                 </td>
                                 <td class="text-center">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <a asp-controller="Booking" asp-action="Create" asp-route-roomId="@item.Id" class="btn btn-outline-success" title="Tạo đơn đặt cho phòng này">
-                                            + Đặt
+                                    <div class="d-inline-flex align-items-center justify-content-center gap-1">
+                                        <a asp-action="Details" asp-route-id="@item.Id" 
+                                           class="btn btn-sm btn-outline-secondary btn-action-room" 
+                                           title="Xem chi tiết phòng">
+                                            <i class="fa-solid fa-eye me-1"></i>Xem
                                         </a>
-                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">
-                                            Sửa
+                                        <a asp-action="Edit" asp-route-id="@item.Id" 
+                                           class="btn btn-sm btn-outline-primary btn-action-room" 
+                                           title="Chỉnh sửa thông tin phòng">
+                                            <i class="fa-solid fa-pen-to-square me-1"></i>Sửa
                                         </a>
-                                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline"
+                                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline m-0 p-0"
                                               onsubmit="return confirm('Bạn có chắc chắn muốn xóa phòng &quot;@item.Name&quot;?');">
                                             @Html.AntiForgeryToken()
-                                            <button type="submit" class="btn btn-outline-danger">
-                                                Xóa
+                                            <button type="submit" class="btn btn-sm btn-outline-danger btn-action-room" title="Xóa phòng">
+                                                <i class="fa-solid fa-trash me-1"></i>Xóa
                                             </button>
                                         </form>
                                     </div>

@@ -25,7 +25,10 @@ public class Room
 
     [Required(ErrorMessage = "Vui lòng chọn trạng thái.")]
     [Display(Name = "Trạng thái")]
-    public string Status { get; set; } = "Available"; // "Available", "Maintenance"
+    public string Status { get; set; } = "Available"; // "Available", "Maintenance", "Occupied"
+
+    [Display(Name = "Link video TikTok")]
+    public string? TiktokLink { get; set; }
 
     // Navigation property: Một Room có thể có nhiều Booking
     [ValidateNever]

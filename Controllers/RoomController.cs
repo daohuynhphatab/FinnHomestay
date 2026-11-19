@@ -3,23 +3,29 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FinnHomestay.Data;
 using FinnHomestay.Models;
+using FinnHomestay.Services;
 
 namespace FinnHomestay.Controllers;
 
 public class RoomController : Controller
 {
     private readonly AppDbContext _context;
+    private readonly IRoomStatusService _roomStatusService;
 
-    public RoomController(AppDbContext context)
+    public RoomController(AppDbContext context, IRoomStatusService roomStatusService)
     {
         _context = context;
+        _roomStatusService = roomStatusService;
     }
 
     // GET: /Room hoặc /Room/Index?searchString=...
-    // Cho phép mọi người (khách chưa đăng nhập, khách hàng, nhân viên, admin) xem danh sách phòng
+    // Cho phép mọi người xem danh sách phòng (Admin/Staff xem để quản lý)
     [AllowAnonymous]
     public async Task<IActionResult> Index(string? searchString)
     {
+        // Tự động kiểm tra và đồng bộ trạng thái phòng (chuyển về Còn trống nếu khách đã check-out)
+        await _roomStatusService.SyncAllRoomsStatusAsync();
+
         ViewData["CurrentFilter"] = searchString;
 
         var query = _context.Rooms.AsQueryable();
@@ -31,6 +37,30 @@ public class RoomController : Controller
 
         var rooms = await query.OrderByDescending(r => r.Id).ToListAsync();
         return View(rooms);
+    }
+
+    // GET: /Room/Details/5
+    // Xem chi tiết thông tin phòng
+    [AllowAnonymous]
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        await _roomStatusService.SyncRoomStatusAsync(id.Value);
+
+        var room = await _context.Rooms
+            .Include(r => r.Bookings)
+            .FirstOrDefaultAsync(m => m.Id == id);
+
+        if (room == null)
+        {
+            return NotFound();
+        }
+
+        return View(room);
     }
 
     // GET: /Room/Create

@@ -34,6 +34,7 @@
                         <label asp-for="Status" class="form-label fw-semibold"></label>
                         <select asp-for="Status" class="form-select">
                             <option value="Available">Còn trống (Available)</option>
+                            <option value="Occupied">Đã đặt (Occupied)</option>
                             <option value="Maintenance">Đang bảo trì (Maintenance)</option>
                         </select>
                         <span asp-validation-for="Status" class="text-danger small"></span>
@@ -44,6 +45,16 @@
                         <input asp-for="ImageUrl" class="form-control" placeholder="Ví dụ: https://example.com/room.jpg" />
                         <span asp-validation-for="ImageUrl" class="text-danger small"></span>
                         <div class="form-text">Nhập URL hình ảnh minh họa cho phòng.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="TiktokLink" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-brands fa-tiktok"></i></span>
+                            <input asp-for="TiktokLink" class="form-control" placeholder="Ví dụ: https://www.tiktok.com/@@finnhomestay/video/..." />
+                        </div>
+                        <span asp-validation-for="TiktokLink" class="text-danger small"></span>
+                        <div class="form-text">Đường dẫn video TikTok giới thiệu không gian phòng (tùy chọn).</div>
                     </div>
 
                     <div class="mb-3">

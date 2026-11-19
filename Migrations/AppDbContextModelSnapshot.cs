@@ -77,7 +77,8 @@ namespace FinnHomestay.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
@@ -85,6 +86,9 @@ namespace FinnHomestay.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TiktokLink")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");

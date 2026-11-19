@@ -1,0 +1,115 @@
+@model FinnHomestay.Models.Room
+
+@{
+    ViewData["Title"] = "Chi tiết phòng: " + Model.Name;
+    var img = string.IsNullOrWhiteSpace(Model.ImageUrl) ? "/photos/rooms/default-room.jpg" : Model.ImageUrl;
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <!-- Nút quay lại & Tiêu đề -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm mb-2">
+                    <i class="fa-solid fa-arrow-left me-1"></i> Quay lại danh sách phòng
+                </a>
+                <h2 class="fw-bold mb-0">🏨 @Model.Name</h2>
+            </div>
+            <div>
+                @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary btn-sm me-1">
+                        <i class="fa-solid fa-pen-to-square me-1"></i> Sửa phòng
+                    </a>
+                }
+                @if (Model.Status == "Available")
+                {
+                    <a asp-controller="Booking" asp-action="Create" asp-route-roomId="@Model.Id" class="btn btn-success btn-sm">
+                        <i class="fa-solid fa-calendar-plus me-1"></i> Đặt phòng này
+                    </a>
+                }
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-4 overflow-hidden mb-4">
+            <div class="position-relative">
+                <img src="@img" alt="@Model.Name" class="w-100" style="max-height: 400px; object-fit: cover;"
+                     onerror="this.onerror=null;this.src='/photos/rooms/default-room.jpg';" />
+                <div class="position-absolute top-0 end-0 m-3">
+                    @if (Model.Status == "Available")
+                    {
+                        <span class="badge bg-success px-3 py-2 rounded-pill shadow-sm fs-6">
+                            <i class="fa-solid fa-circle-check me-1"></i> Còn trống
+                        </span>
+                    }
+                    else if (Model.Status == "Occupied")
+                    {
+                        <span class="badge bg-danger px-3 py-2 rounded-pill shadow-sm fs-6">
+                            <i class="fa-solid fa-ban me-1"></i> Đã đặt
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill shadow-sm fs-6">
+                            <i class="fa-solid fa-wrench me-1"></i> Đang bảo trì
+                        </span>
+                    }
+                </div>
+            </div>
+
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 border-bottom pb-3 mb-3">
+                    <div>
+                        <span class="text-muted small d-block">Giá niêm yết mỗi đêm</span>
+                        <span class="text-success fw-bold fs-3">@Model.Price.ToString("N0") VNĐ</span>
+                    </div>
+
+                    <!-- Nút xem video trên TikTok nếu phòng có link -->
+                    @if (!string.IsNullOrWhiteSpace(Model.TiktokLink))
+                    {
+                        <div>
+                            <a href="@Model.TiktokLink" target="_blank" rel="noopener noreferrer" 
+                               class="btn btn-dark d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill shadow-sm text-decoration-none"
+                               title="Xem video giới thiệu phòng thực tế trên TikTok">
+                                <span class="fs-6">🎥</span>
+                                <span class="fw-semibold">Xem video trực quan trên TikTok</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square small text-warning"></i>
+                            </a>
+                        </div>
+                    }
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-2">Mô tả tiện nghi phòng</h5>
+                    <p class="text-muted lead fs-6" style="white-space: pre-line;">
+                        @(string.IsNullOrWhiteSpace(Model.Description) ? "Chưa có thông tin mô tả chi tiết cho phòng này." : Model.Description)
+                    </p>
+                </div>
+
+                <div class="row g-3 border-top pt-3">
+                    <div class="col-sm-4">
+                        <div class="p-3 bg-light rounded-3 text-center">
+                            <i class="fa-solid fa-wifi text-primary fs-4 mb-2"></i>
+                            <div class="fw-semibold">Wi-Fi miễn phí</div>
+                            <small class="text-muted">Tốc độ cao</small>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="p-3 bg-light rounded-3 text-center">
+                            <i class="fa-solid fa-snowflake text-info fs-4 mb-2"></i>
+                            <div class="fw-semibold">Điều hòa 2 chiều</div>
+                            <small class="text-muted">Làm mát &amp; sưởi ấm</small>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="p-3 bg-light rounded-3 text-center">
+                            <i class="fa-solid fa-shield-heart text-danger fs-4 mb-2"></i>
+                            <div class="fw-semibold">Vệ sinh khép kín</div>
+                            <small class="text-muted">Nước nóng 24/7</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
