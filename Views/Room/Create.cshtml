@@ -30,6 +30,12 @@
                         <span asp-validation-for="Price" class="text-danger small"></span>
                     </div>
 
+                    <!-- Chọn loại phòng cho phòng mới -->
+                    <div class="mb-3">
+                        <label asp-for="RoomTypeId" class="form-label fw-semibold"></label>
+                        <select asp-for="RoomTypeId" asp-items="ViewBag.RoomTypes" class="form-select"><option value="">-- Chưa phân loại --</option></select>
+                    </div>
+
                     <div class="mb-3">
                         <label asp-for="Status" class="form-label fw-semibold"></label>
                         <select asp-for="Status" class="form-select">

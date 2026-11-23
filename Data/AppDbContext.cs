@@ -11,6 +11,7 @@ public class AppDbContext : DbContext
 
     public DbSet<User> Users => Set<User>();
     public DbSet<Room> Rooms => Set<Room>();
+    public DbSet<RoomType> RoomTypes => Set<RoomType>();
     public DbSet<Booking> Bookings => Set<Booking>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,6 +36,16 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Room>()
             .Property(r => r.Price)
             .HasPrecision(18, 2);
+
+        modelBuilder.Entity<RoomType>()
+            .Property(r => r.Price)
+            .HasPrecision(18, 2);
+
+        modelBuilder.Entity<Room>()
+            .HasOne(r => r.RoomType)
+            .WithMany(t => t!.Rooms)
+            .HasForeignKey(r => r.RoomTypeId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<Booking>()
             .Property(b => b.TotalPrice)

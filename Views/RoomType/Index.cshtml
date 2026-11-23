@@ -1,0 +1,39 @@
+@model IEnumerable<FinnHomestay.Models.RoomType>
+@{ ViewData["Title"] = "Quản lý Loại phòng"; }
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div><h1 class="h2 fw-bold mb-1">Quản lý Loại phòng</h1><p class="text-muted mb-0">Tổ chức hạng phòng và giá cơ bản tại Finn Homestay.</p></div>
+    <!-- Nút thêm mới loại phòng -->
+    <a asp-action="Create" class="btn btn-primary rounded-pill px-4 py-2"><i class="fa-solid fa-plus me-2"></i>Thêm loại phòng</a>
+</div>
+@if (TempData["SuccessMessage"] != null) { <div class="alert alert-success" role="status">@TempData["SuccessMessage"]</div> }
+<div class="card border-0 shadow-sm rounded-4"><div class="card-body p-0">
+    @if (!Model.Any()) { <div class="p-5 text-center text-muted">Chưa có loại phòng nào. Hãy thêm loại phòng đầu tiên.</div> }
+    else {
+        <!-- Bảng danh sách loại phòng -->
+        <div class="table-responsive" tabindex="0" role="region" aria-label="Danh sách loại phòng có thể cuộn ngang">
+            <table class="table table-hover align-middle mb-0">
+                <caption class="visually-hidden">Danh sách loại phòng hiện có</caption>
+                <thead class="table-light"><tr><th scope="col">Loại phòng</th><th scope="col">Giá cơ bản</th><th scope="col">Mô tả</th><th scope="col" class="text-end">Thao tác</th></tr></thead>
+                <tbody>
+                <!-- Vòng lặp hiển thị từng loại phòng -->
+                @foreach (var item in Model) {
+                    <tr><th scope="row"><div class="d-flex align-items-center gap-3">
+                        @if (!string.IsNullOrWhiteSpace(item.ImageUrl)) { <img src="@item.ImageUrl" alt="" width="64" height="48" class="rounded-3 object-fit-cover" /> }
+                        <span class="fw-semibold">@item.Name</span>
+                    </div></th><td class="text-nowrap fw-semibold text-success">@item.Price.ToString("N0") VNĐ</td>
+                    <td class="text-muted">@(string.IsNullOrWhiteSpace(item.Description) ? "Chưa có mô tả" : item.Description)</td>
+                    <td><div class="d-flex justify-content-end gap-2">
+                        <!-- Nút sửa và xóa có cùng kích thước, bo góc -->
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary rounded-3 px-3" style="min-width:76px; min-height:44px"><i class="fa-solid fa-pen me-1"></i>Sửa</a>
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Xóa loại phòng @item.Name?');">
+                            @Html.AntiForgeryToken()
+                            <button class="btn btn-sm btn-outline-danger rounded-3 px-3" style="min-width:76px; min-height:44px" type="submit"><i class="fa-solid fa-trash me-1"></i>Xóa</button>
+                        </form>
+                    </div></td></tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</div></div>

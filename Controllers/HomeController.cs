@@ -18,6 +18,7 @@ public class HomeController : Controller
         _roomStatusService = roomStatusService;
     }
 
+    // [GET] Hiển thị trang chủ, phòng nổi bật và các loại phòng
     public async Task<IActionResult> Index()
     {
         // Tự động kiểm tra và chuyển phòng đã check-out về Available
@@ -27,14 +28,31 @@ public class HomeController : Controller
         var rooms = await _context.Rooms
             .Take(6)
             .ToListAsync();
+        ViewBag.RoomTypes = await _context.RoomTypes.OrderBy(t => t.Name).ToListAsync();
         return View(rooms);
     }
 
+    // [GET] Hiển thị thông tin loại phòng và các phòng còn trống thuộc loại đó
+    public async Task<IActionResult> RoomTypeDetails(int id)
+    {
+        var roomType = await _context.RoomTypes.FirstOrDefaultAsync(t => t.Id == id);
+        if (roomType == null) return NotFound();
+
+        await _roomStatusService.SyncAllRoomsStatusAsync();
+        ViewBag.AvailableRooms = await _context.Rooms
+            .Where(r => r.RoomTypeId == id && r.Status == "Available")
+            .OrderBy(r => r.Name)
+            .ToListAsync();
+        return View(roomType);
+    }
+
+    // [GET] Hiển thị chính sách quyền riêng tư
     public IActionResult Privacy()
     {
         return View();
     }
 
+    // [GET] Hiển thị trang lỗi chung
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

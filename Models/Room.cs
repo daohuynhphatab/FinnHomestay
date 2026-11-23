@@ -30,6 +30,12 @@ public class Room
     [Display(Name = "Link video TikTok")]
     public string? TiktokLink { get; set; }
 
+    [Display(Name = "Loại phòng")]
+    public int? RoomTypeId { get; set; }
+
+    [ValidateNever]
+    public RoomType? RoomType { get; set; }
+
     // Navigation property: Một Room có thể có nhiều Booking
     [ValidateNever]
     public List<Booking> Bookings { get; set; } = new();

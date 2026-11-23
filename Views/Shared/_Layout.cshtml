@@ -43,6 +43,12 @@
                         @* Menu Quản lý Phòng: Chỉ Admin hoặc Staff mới thấy *@
                         @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
                         {
+                            <!-- Liên kết quản lý loại phòng dành cho Admin và Staff -->
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="RoomType" asp-action="Index">
+                                    <i class="fa-solid fa-layer-group me-1 text-muted"></i> Quản lý Loại phòng
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Room" asp-action="Index">
                                     <i class="fa-solid fa-bed me-1 text-muted"></i> Quản lý Phòng

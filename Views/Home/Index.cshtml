@@ -160,6 +160,35 @@
     </div>
 </section>
 
+<!-- Các loại phòng nổi bật -->
+@{ var roomTypes = ViewBag.RoomTypes as IEnumerable<FinnHomestay.Models.RoomType> ?? Enumerable.Empty<FinnHomestay.Models.RoomType>(); }
+<section class="py-5 bg-light" id="room-types">
+    <div class="container">
+        <div class="text-center mb-4"><span class="section-tag">Chọn theo nhu cầu</span><h2 class="section-title">Loại phòng nổi bật</h2></div>
+        @if (roomTypes.Any())
+        {
+            <!-- Vòng lặp hiển thị các thẻ loại phòng nổi bật -->
+            <div class="row g-4">
+                @foreach (var item in roomTypes)
+                {
+                    var image = string.IsNullOrWhiteSpace(item.ImageUrl) ? "/photos/rooms/default-room.jpg" : item.ImageUrl;
+                    <div class="col-md-6 col-lg-4"><article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                        <img src="@image" alt="@item.Name" class="w-100 object-fit-cover" style="height:220px" />
+                        <div class="card-body p-4 d-flex flex-column">
+                            <h3 class="h4 font-heading">@item.Name</h3>
+                            <p class="text-muted flex-grow-1">@(string.IsNullOrWhiteSpace(item.Description) ? "Khám phá không gian nghỉ dưỡng tại Finn Homestay." : item.Description)</p>
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2"><strong class="text-success">Từ @item.Price.ToString("N0") VNĐ/đêm</strong>
+                                <a asp-controller="Home" asp-action="RoomTypeDetails" asp-route-id="@item.Id" class="btn btn-primary rounded-pill px-3">Xem chi tiết &amp; Đặt phòng</a>
+                            </div>
+                        </div>
+                    </article></div>
+                }
+            </div>
+        }
+        else { <p class="text-center text-muted">Thông tin loại phòng sẽ sớm được cập nhật.</p> }
+    </div>
+</section>
+
 <!-- =================================================================
      4. SECTION PHÒNG NỔI BẬT (Card phòng bo góc 16px, không viền, bóng mờ, hover zoom)
      ================================================================= -->

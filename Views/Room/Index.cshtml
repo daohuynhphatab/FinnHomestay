@@ -89,6 +89,7 @@
                         <tr>
                             <th style="width: 80px;" class="text-center">Hình ảnh</th>
                             <th>Tên phòng</th>
+                            <th>Loại phòng</th>
                             <th>Mô tả</th>
                             <th>Giá / đêm</th>
                             <th class="text-center">Trạng thái</th>
@@ -120,6 +121,7 @@
                                         </a>
                                     }
                                 </td>
+                                <td>@(item.RoomType?.Name ?? "Chưa phân loại")</td>
                                 <td class="text-muted text-truncate" style="max-width: 250px;">
                                     @(string.IsNullOrEmpty(item.Description) ? "Chưa có mô tả" : item.Description)
                                 </td>

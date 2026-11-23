@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using FinnHomestay.Data;
 using FinnHomestay.Models;
 using FinnHomestay.Services;
@@ -35,7 +36,7 @@ public class RoomController : Controller
             query = query.Where(r => r.Name.Contains(searchString));
         }
 
-        var rooms = await query.OrderByDescending(r => r.Id).ToListAsync();
+        var rooms = await query.Include(r => r.RoomType).OrderByDescending(r => r.Id).ToListAsync();
         return View(rooms);
     }
 
@@ -68,6 +69,7 @@ public class RoomController : Controller
     [Authorize(Roles = "Admin, Staff")]
     public IActionResult Create()
     {
+        ViewBag.RoomTypes = new SelectList(_context.RoomTypes.OrderBy(t => t.Name), "Id", "Name");
         return View(new Room());
     }
 
@@ -85,6 +87,7 @@ public class RoomController : Controller
             return RedirectToAction(nameof(Index));
         }
 
+        ViewBag.RoomTypes = new SelectList(_context.RoomTypes.OrderBy(t => t.Name), "Id", "Name", room.RoomTypeId);
         return View(room);
     }
 
@@ -104,6 +107,7 @@ public class RoomController : Controller
             return NotFound();
         }
 
+        ViewBag.RoomTypes = new SelectList(_context.RoomTypes.OrderBy(t => t.Name), "Id", "Name", room.RoomTypeId);
         return View(room);
     }
 
@@ -138,6 +142,7 @@ public class RoomController : Controller
             }
         }
 
+        ViewBag.RoomTypes = new SelectList(_context.RoomTypes.OrderBy(t => t.Name), "Id", "Name", room.RoomTypeId);
         return View(room);
     }
 

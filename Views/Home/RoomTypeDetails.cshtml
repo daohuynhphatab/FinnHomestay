@@ -1,0 +1,43 @@
+@model FinnHomestay.Models.RoomType
+@using FinnHomestay.Models
+@{ ViewData["Title"] = Model.Name; var availableRooms = ViewBag.AvailableRooms as IEnumerable<Room> ?? Enumerable.Empty<Room>(); }
+
+<section class="container py-5">
+    <nav aria-label="Điều hướng trang" class="mb-4"><a asp-action="Index" class="text-decoration-none">Trang chủ</a><span class="text-muted mx-2">/</span><span>@Model.Name</span></nav>
+    <div class="row g-4 g-lg-5 align-items-center mb-5">
+        <div class="col-lg-7">
+            <!-- Hình ảnh lớn của loại phòng -->
+            <img src="@(string.IsNullOrWhiteSpace(Model.ImageUrl) ? "/photos/rooms/default-room.jpg" : Model.ImageUrl)" alt="@Model.Name" class="w-100 rounded-4 shadow-sm object-fit-cover" style="max-height:520px; min-height:280px" />
+        </div>
+        <div class="col-lg-5">
+            <span class="section-tag">Finn Homestay</span>
+            <h1 class="display-5 font-heading fw-bold mt-2">@Model.Name</h1>
+            <p class="fs-4 fw-semibold text-success">Từ @Model.Price.ToString("N0") VNĐ/đêm</p>
+            <p class="text-muted" style="white-space: pre-line">@(string.IsNullOrWhiteSpace(Model.Description) ? "Không gian nghỉ dưỡng thoải mái, phù hợp cho chuyến đi của bạn." : Model.Description)</p>
+            @if (!string.IsNullOrWhiteSpace(Model.TiktokLink))
+            {
+                <!-- Liên kết video review TikTok mở ở tab mới -->
+                <a href="@Model.TiktokLink" target="_blank" rel="noopener noreferrer" class="btn btn-dark rounded-pill px-4 py-3 mt-2"><i class="fa-brands fa-tiktok me-2"></i>🎥 Xem video review trên TikTok</a>
+            }
+        </div>
+    </div>
+
+    <div class="border-top pt-5">
+        <div class="mb-4"><span class="section-tag">Sẵn sàng đón bạn</span><h2 class="h2 font-heading fw-bold">Phòng còn trống</h2></div>
+        @if (availableRooms.Any())
+        {
+            <!-- Vòng lặp hiển thị danh sách phòng còn trống -->
+            <div class="row g-3">
+                @foreach (var room in availableRooms)
+                {
+                    <div class="col-md-6 col-lg-4"><article class="card h-100 border-0 shadow-sm rounded-4"><div class="card-body p-4 d-flex justify-content-between align-items-center gap-3">
+                        <div><h3 class="h5 mb-1">@room.Name</h3><span class="text-muted">@room.Price.ToString("N0") VNĐ/đêm</span></div>
+                        <!-- Nút đặt phòng này -->
+                        <a asp-controller="Booking" asp-action="Create" asp-route-roomId="@room.Id" class="btn btn-primary rounded-pill px-3 text-nowrap">Đặt phòng này</a>
+                    </div></article></div>
+                }
+            </div>
+        }
+        else { <div class="alert alert-light border rounded-4 p-4">Hiện chưa có phòng trống thuộc loại này. Vui lòng quay lại sau hoặc liên hệ Finn Homestay để được hỗ trợ.</div> }
+    </div>
+</section>
